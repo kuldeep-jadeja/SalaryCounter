@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run postinstall && next build",
+    "postinstall": "puppeteer browsers install chrome",
     "start": "next start",
     "lint": "next lint"
   },
