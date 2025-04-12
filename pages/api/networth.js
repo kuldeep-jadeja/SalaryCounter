@@ -45,9 +45,11 @@ export default async function handler(req, res) {
         await page.goto(searchUrl, { waitUntil: 'domcontentloaded' });
 
         const fallbackText = await page.evaluate(() => {
-            const snippet = Array.from(document.querySelectorAll('span'))
-                .find(el => el.innerText.toLowerCase().includes('net worth'));
-            return snippet?.parentElement?.innerText || null;
+            const spans = Array.from(document.querySelectorAll('span'));
+            const netWorthSpan = spans.find(el => {
+                return /\$[\d,.]+\s*(Million|Billion)/i.test(el.textContent);
+            });
+            return netWorthSpan?.textContent || null;
         });
 
         if (!fallbackText) {
